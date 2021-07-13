@@ -1,20 +1,23 @@
+// 여러 항 계산 가능하도록 수정 -> 0이 맨 처음에도 올 수 있도록 수정
+// 하지만, 아직 순서대로만 계산함 (우선순위 고려 x)
+// 연산자는 숫자 다음에만 올 수 있도록 함
+// history 지우는 부분 추가
+// 연산자가 계산 마지막에 오거나 또는 연산자가 중복되면, 마지막 값 또는 그 사이 값을 0으로 계산하는 부분을 history에 표현
+
+var opers = [];
+var calc_times = 0;
+
 function add(x) 
 {
     var display = document.getElementById('display');
-
-    if (x == 0)
-    {
-        if(display.innerHTML == "")
-            return;
-    }
-
     display.innerHTML += x;
-
 }
 
 function allClear()
 {
     document.getElementById('display').innerHTML = "";
+    opers = [];
+    calc_times = 0;
 }
 
 function historyClear()
@@ -22,89 +25,68 @@ function historyClear()
     document.getElementById('history').innerHTML = "";
 }
 
-var choice = 0;
-
-function operator(char)
-{   
-    var element = [];
-    var result;
-    
-    switch (char)
+function operator(oper)
+{
+    if(oper === '=')
+        calc();
+    else if(display.innerHTML == "")
+        return;
+    else
     {
-        case '+':
-            if(display.innerHTML == "")
-                return;
-            else
-            {
-                choice = 1;
-                add('+');
-            }
-            break;
-        case '-':
-            if(display.innerHTML == "")
-                return;
-            else
-            {
-                choice = 2;
-                add('-');
-            }
-            break;
-        case '×':
-            if(display.innerHTML == "")
-                return;
-            else
-            {
-                choice = 3;
-                add('×');
-            }
-            break;
-        case '÷':
-            if(display.innerHTML == "")
-                return;
-            {
-                choice = 4;
-                add('÷');
-            }
-            break;
-        case '=':
-            if(choice == 1)
-            {  
-                element = display.innerHTML.split('+');
-                result = Number(element[0]) + Number(element[1]);
-                addHistory(element[0] + ' + ' + element[1] + ' = ' + result);
-            }
-            else if(choice == 2)
-            {
-                element = display.innerHTML.split('-');
-                result = Number(element[0]) - Number(element[1]);
-                addHistory(element[0] + ' - ' + element[1] + ' = ' + result);
-            }
-            else if(choice == 3)
-            {
-                element = display.innerHTML.split('×');
-                result = Number(element[0]) * Number(element[1]);
-                addHistory(element[0] + ' × ' + element[1] + ' = ' + result);
-            }
-            else if(choice == 4)
-            {
-                element = display.innerHTML.split('÷');
-                if(element[1] === "0")
-                    addHistory("error");
-                else
-                {   
-                    result = parseFloat(Number(element[0])) / parseFloat(Number(element[1]));
-                    addHistory(element[0] + ' ÷ ' + element[1] + ' = ' + result);
-                }
-            }
-            break;
-        default:
-            break;
+        add(oper);
+        opers[calc_times] = oper;
+        calc_times++;
     }
 }
 
-function addHistory(result)
+function calc()
+{
+    var element = [];
+    var result;
+    var history = "";
+
+    element = document.getElementById('display').innerHTML.split(/\D/);
+
+    for(var j = 0; j < element.length; j++)
+    {
+        if(element[j] == "")
+            element[j] = "0";
+    }
+
+    console.log(element);
+
+    result = Number(element[0]);
+    history = element[0];
+    for(var i = 1; i <= calc_times; i++)
+    {
+        switch (opers[i-1])
+        {
+            case '+':
+                result += Number(element[i]);
+                history += ' + ' + element[i];
+                break;
+            case '-':
+                result -= Number(element[i]);
+                history += ' - ' + element[i];  
+                break;
+            case '×':
+                result *= Number(element[i]);
+                history += ' × ' + element[i];
+                break;
+            case '÷':
+                result /= parseFloat(Number(element[i]));
+                history += ' ÷ ' + element[i];
+                break;
+            default:
+                break;
+        }
+    }
+    addHistory(history + ' = ' + result);
+}
+
+function addHistory(history)
 {
     var tr = document.getElementById('history').insertRow();
     var td = tr.insertCell(0);
-    td.textContent = result;
+    td.textContent = history;
 }
