@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="src/styles.css" />
+    <title>계산기</title>
+  </head>
+  <body>
+    <div class="App">
+      <div class="Container">
+        <div class="calc">
+          <div class="calc__title">
+            calculator
+          </div>
+          <div class="calc__display" id="display"></div>
+          <div class="calc__keyboard">
+            <div class="calc__keyboard__main">
+              <div class="button calc__keyboard__ac" onclick="allClear()">AC</div>
+              <div class="calc__keyboard__number">
+                <div class="calc__keyboard__number__line">
+                  <div class="num button button--blue" onclick="add(1)">1</div>
+                  <div class="num button button--blue" onclick="add(2)">2</div>
+                  <div class="num button button--blue" onclick="add(3)">3</div>
+                </div>
+                <div class="calc__keyboard__number__line">
+                  <div class="num button button--blue" onclick="add(4)">4</div>
+                  <div class="num button button--blue" onclick="add(5)">5</div>
+                  <div class="num button button--blue" onclick="add(6)">6</div>
+                </div>
+                <div class="calc__keyboard__number__line">
+                  <div class="num button button--blue" onclick="add(7)">7</div>
+                  <div class="num button button--blue" onclick="add(8)">8</div>
+                  <div class="num button button--blue" onclick="add(9)">9</div>
+                </div>
+              </div>
+              <div class="num button button--blue--big" onclick="add(0)">0</div>
+            </div>
+            <div class="calc__keyboard__operator">
+              <div class="operator button button--deepblue" onclick="operator('+')">
+                +
+              </div>
+              <div class="operator button button--deepblue" onclick="operator('-')">
+                −
+              </div>
+              <div class="operator button button--deepblue" onclick="operator('×')">
+                ×
+              </div>
+              <div class="operator button button--deepblue" onclick="operator('÷')">
+                ÷
+              </div>
+              <div class="operator button button--pink" onclick="operator('=')">
+                =
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="history">
+          <div class="history__title">History</div>
+          <div class="button button--history--clear" onclick="historyClear()">HC</div>
+          <table class="history__table">
+            <tbody id="history"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <script src="src/index.js"></script>
+  </body>
+</html>
